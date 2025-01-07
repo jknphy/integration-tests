@@ -155,11 +155,11 @@ export async function dumpPage(label: string) {
 }
 
 // define it() as a wrapper which dumps the page on a failure
-export async function it(label: string, test: () => Promise<void>) {
+export async function it(label: string, test: () => Promise<void>, timeout?: number) {
   testIt(
     label,
     // abort when the test takes more than one minute
-    { timeout: 60000 },
+    { timeout: timeout || 60000 },
     async (t) => {
       try {
         // do not run any test after first failure
@@ -178,4 +178,30 @@ export async function it(label: string, test: () => Promise<void>) {
       }
     },
   );
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// eslint-disable-next-line
+export type GConstructor<T = {}> = new (...args: any[]) => T;
+
+// for product ids, please check https://github.com/agama-project/agama/tree/master/products.d
+export enum ProductId {
+  "Leap_16.0" = "Leap 16.0",
+  MicroOS = "openSUSE MicroOS",
+  "SLES_16.0" = "SUSE Linux Enterprise Server 16.0",
+  "SLES_SAP_16.0" = "SUSE Linux Enterprise Server for SAP Applications 16.0",
+  Slowroll = "Slowroll",
+  Tumbleweed = "openSUSE Tumbleweed",
+  None = "none",
+}
+
+export enum Desktop {
+  gnome = "GNOME Desktop Environment (Wayland)",
+  kde = "KDE Applications and Plasma Desktop",
+  xfce = "XFCE Desktop Environment",
+  basic = "A basic desktop (based on IceWM)",
+  none = "None",
 }
